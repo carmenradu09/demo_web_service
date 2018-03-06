@@ -55,9 +55,24 @@ public class MainControllerTest {
     }
 
     @Test
+    public void updateUser() {
+        URI targetUrl= UriComponentsBuilder.fromUriString("http://localhost:" + port)
+                .path("/demo/update")
+                .queryParam("name", "Luana-Maria")
+                .queryParam("email", "Luana@capgemini.com")
+                .build()
+                .encode()
+                .toUri();
+
+        String getUsersResponse = this.restTemplate.getForObject(targetUrl, String.class);
+        assertThat(getUsersResponse.contains("Luana-Maria"));
+    }
+
+
+    @Test
     public void deleteUser() {
         URI targetUrl= UriComponentsBuilder.fromUriString("http://localhost:" + port)
-                .path("/demo/all")
+                .path("/demo/delete")
                 .queryParam("name", "Luana")
                 .queryParam("email", "Luana@capgemini.com")
                 .build()
@@ -65,7 +80,6 @@ public class MainControllerTest {
                 .toUri();
 
         String getUsersResponse = this.restTemplate.getForObject(targetUrl, String.class);
-        System.out.println("======== getUserResponse: " + getUsersResponse);
         assertThat(!(getUsersResponse).contains("Luana@capgemini.com"));
     }
 }

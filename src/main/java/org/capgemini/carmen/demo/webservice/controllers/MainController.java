@@ -17,42 +17,75 @@ public class MainController {
 	@Autowired
 	private UserRepository userRepository;
 
+    /**
+     *
+     * @param name
+     * @param email
+     * @return
+     */
 	@GetMapping(path="/add")
-	public @ResponseBody String addNewUser (@RequestParam String name
-			, @RequestParam String email) {
+	public @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String email) {
 
 		User user = new User();
 		user.setName(name);
 		user.setEmail(email);
 		userRepository.save(user);
 
-		return user.toString();
+		return "Added: " + user.toString();
 	}
 
+    /**
+     *
+     * @return
+     */
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 
+    /**
+     *
+     * @param name
+     * @param email
+     * @return
+     */
+    @GetMapping(path="/update")
+    public @ResponseBody String updateUser(@RequestParam String name, @RequestParam String email) {
+        User updatedUser = new User();
+        Iterable<User> allUsers = getAllUsers();
+
+        if (allUsers != null) {
+            for(User user : allUsers) {
+                if(user.getEmail().equals(email)) {
+                    user.setName(name);
+                    userRepository.save(user);
+                }
+                updatedUser = user;
+            }
+        }
+        return "Updated: \n" + updatedUser.toString();
+    }
+
+    /**
+     *
+     * @param name
+     * @param email
+     * @return
+     */
     @GetMapping(path="/delete")
-    public @ResponseBody String deleteUser (@RequestParam String name
-            , @RequestParam String email) {
+    public @ResponseBody String deleteUser (@RequestParam String name, @RequestParam String email) {
+        User deletedUser = new User();
         Iterable<User> allUsers = getAllUsers();
         if (allUsers != null) {
             for(User user : allUsers) {
-                System.out.println("============================================");
-                System.out.println(user.getName() + ", " + user.getEmail());
-                System.out.println("============================================");
-
                 if(user.getName().equals(name) &&
                         (user.getEmail().equals(email))) {
                     userRepository.delete(user);
                 }
+                deletedUser = user;
             }
         }
 
-        return "User deleted";
+        return "Deleted: " + deletedUser.toString();
     }
-
-    
 }
