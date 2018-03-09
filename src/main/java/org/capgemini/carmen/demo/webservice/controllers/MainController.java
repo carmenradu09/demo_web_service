@@ -4,12 +4,7 @@ import org.capgemini.carmen.demo.webservice.model.User;
 import org.capgemini.carmen.demo.webservice.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Iterator;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path="/demo")
@@ -33,6 +28,25 @@ public class MainController {
 
 		return "Added: " + user.toString();
 	}
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(path="/all/{id}")
+    public @ResponseBody User getUserById(@PathVariable("id") Long id) {
+        User retrievedUser = new User();
+        Iterable<User> allUsers = getAllUsers();
+        if(allUsers != null) {
+            for(User user : allUsers) {
+                if(id == user.getId()) {
+                    retrievedUser = user;
+                }
+            }
+        }
+        return retrievedUser;
+    }
 
     /**
      *
