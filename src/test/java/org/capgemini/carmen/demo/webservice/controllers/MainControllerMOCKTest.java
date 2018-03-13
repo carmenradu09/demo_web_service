@@ -23,17 +23,17 @@ public class MainControllerMOCKTest {
         }
     }
 
-    @Test
-    public void getAllUsers() {
-        MainController mainController = mock(MainController.class);
-        Iterable<User> allUsers = mainController.getAllUsers();
-        Iterator<User> iterator = allUsers.iterator();
-
-        when(mainController.getAllUsers()).thenReturn((Iterable<User>) iterator);
-        for(User user : allUsers) {
-            when(iterator.next()).thenReturn(user);
-        }
-    }
+//    @Test
+//    public void getAllUsers() {
+//        MainController mainController = mock(MainController.class);
+//        Iterable<User> allUsers = mainController.getAllUsers();
+//        Iterator<User> iterator = allUsers.iterator();
+//
+//        when(mainController.getAllUsers()).thenReturn((Iterable<User>) iterator);
+//        for(User user : allUsers) {
+//            when(iterator.next()).thenReturn(user);
+//        }
+//    }
 
     @Test
     public void updateUser() {
